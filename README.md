@@ -153,7 +153,7 @@ public List<ValidationRule> validationRules(
 
 ---
 
-## 3. Configuration driven Pricing values
+## 3. Externalized configuration for pricing and maximum ticket limit
 
 Prices and the maximum ticket limit live in `BookingProperties` via `@ConfigurationProperties` class.
 
@@ -203,7 +203,7 @@ It will be helpful if future APIs map errors differently.
 
 ## 6. Interface Segration through PriceCalculator and SeatCalculator
 
-PriceCalculator and SeatCalculator are defined as separate interfaces with dedicated responsibilities.
+`PriceCalculator` and `SeatCalculator` are defined as separate interfaces with dedicated responsibilities.
 
 Their standard implementations can be replaced with alternative calculation strategies in future without impacting the service layer.
 
@@ -211,7 +211,19 @@ Their standard implementations can be replaced with alternative calculation stra
 
 ---
 
-## 7. No DTO and controller layer
+## 7. Fail Fast Behaviour
+
+The service is intentionally designed around a fail fast approach to detect problems as early as possible and prevent invalid processing.
+
+* Jakarta Bean Validation is used on externalised configuration properties such as ticket pricing and maximum ticket limits. If any required configuration is missing or invalid, the application fails during startup itself rather than allowing runtime failures.
+
+* Similarly, the validation pipeline follows fail fast behaviour. Each validation rule executes in sequence, and as soon as a rule fails, the service immediately throws the corresponding validation exception without continuing to the remaining stages of the booking flow.
+
+* This prevents unnecessary processing, avoids invalid external service calls, and makes failures easier to identify and debug.
+
+---
+
+## 8. No DTO and controller layer
 
 The `purchaseTickets` method in `CinemaTicketService` signature returns `String`.
 
@@ -221,7 +233,7 @@ If the controller layer were implemented, a response DTO would be the right call
 
 ---
 
-## 8. Seat reservation before payment
+## 9. Seat reservation before payment
 
 Though we assumed the external services works always without any failure, the service reserves seats before debiting the account.
 
@@ -315,17 +327,6 @@ Each class is tested independently to keep the tests simple and focused.
 **Mockito** is used to mock dependencies so the tests only verify the behaviour of the class being tested.
 
 `AssertJ` is used instead of standard JUnit assertions because the assertions are cleaner, easier to read, and provide better failure messages.
-
----
-
-# Trade-offs
-
-| Decision | Trade-off |
-|----------|------------|
-| No controller implementation | It is not in the current assessment scope as per the instruction |
-| String return type in TicketService | Matches the assessed interface; no modification allowed in TicketService as per the instruction |
-| Manual ordering in validation pipeline | More explicit ordering than `@Order` but requires editing `ValidationConfiguration` when adding rules |
-| No rollback on partial failure | Not in current scope as third party service always succeed |
 
 ---
 
