@@ -1,32 +1,35 @@
 package uk.gov.dwp.engineering.recruitment.domain;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.dwp.engineering.recruitment.domain.TicketType.ADULT;
 import static uk.gov.dwp.engineering.recruitment.domain.TicketType.CHILD;
 import static uk.gov.dwp.engineering.recruitment.domain.TicketType.INFANT;
 
-import org.junit.jupiter.api.Test;
-
 class TicketRequestTest {
 
-  @Test
-  void givenValidInfantTicketRequest_whenGetTypeAndTicketCount_thenExpectedValuesReturned() {
-    final TicketRequest ticketRequest = new TicketRequest(INFANT, 0);
-    assertEquals(0, ticketRequest.ticketCount());
-    assertEquals(INFANT, ticketRequest.type());
-  }
+    @Test
+    void shouldReturnTypeAndCount_whenInfantTicketRequestCreated() {
+        TicketRequest ticketRequest = new TicketRequest(INFANT, 0);
 
-  @Test
-  void givenValidChildTicketRequest_whenGetTypeAndTicketCount_thenExpectedValuesReturned() {
-    final TicketRequest ticketRequest = new TicketRequest(CHILD, 1);
-    assertEquals(1, ticketRequest.ticketCount());
-    assertEquals(CHILD, ticketRequest.type());
-  }
+        assertThat(ticketRequest.type()).isEqualTo(INFANT);
+        assertThat(ticketRequest.ticketCount()).isZero();
+    }
 
-  @Test
-  void givenValidAdultTicketRequest_whenGetTypeAndTicketCount_thenExpectedValuesReturned() {
-    final TicketRequest ticketRequest = new TicketRequest(ADULT, 2);
-    assertEquals(2, ticketRequest.ticketCount());
-    assertEquals(ADULT, ticketRequest.type());
-  }
+    @Test
+    void shouldReturnTypeAndCount_whenChildTicketRequestCreated() {
+        TicketRequest ticketRequest = new TicketRequest(CHILD, 1);
+
+        assertThat(ticketRequest.type()).isEqualTo(CHILD);
+        assertThat(ticketRequest.ticketCount()).isEqualTo(1);
+    }
+
+    @Test
+    void shouldReturnTypeAndCount_whenAdultTicketRequestCreated() {
+        TicketRequest ticketRequest = new TicketRequest(ADULT, 2);
+
+        assertThat(ticketRequest.type()).isEqualTo(ADULT);
+        assertThat(ticketRequest.ticketCount()).isEqualTo(2);
+    }
 }

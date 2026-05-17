@@ -1,26 +1,25 @@
 package uk.gov.dwp.engineering.recruitment;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest
-public class CinemaTicketsApplicationTest {
+class CinemaTicketsApplicationTest {
 
-  @Autowired
-  ApplicationContext context;
+    @Autowired
+    ApplicationContext context;
 
-  @Test
-  public void whenSpringIsLoadedContextIsNotNull() {
-    assertNotNull(context);
-  }
+    @Test
+    void shouldLoadApplicationContext_whenSpringBootStarts() {
+        assertThat(context).isNotNull();
+    }
 
-  @Test
-  void main() {
-    CinemaTicketsApplication.main(new String[]{"--spring.main.web-environment=false",});
-  }
-
+    @Test
+    void shouldStartWithoutException_whenMainMethodInvoked() {
+        CinemaTicketsApplication.main(new String[]{"--spring.main.web-environment=false"});
+    }
 }

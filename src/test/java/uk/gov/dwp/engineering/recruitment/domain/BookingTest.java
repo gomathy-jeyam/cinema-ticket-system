@@ -1,27 +1,38 @@
 package uk.gov.dwp.engineering.recruitment.domain;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static uk.gov.dwp.engineering.recruitment.domain.TicketType.ADULT;
-
-import java.util.List;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static uk.gov.dwp.engineering.recruitment.domain.TicketType.ADULT;
 
 class BookingTest {
 
-  @Test
-  void givenAdultTicketBooking_whenGetAccountAndTicketRequest_thenExpectedValuesReturned() {
-    final TicketRequest ticketRequest = new TicketRequest(ADULT, 1);
-    final Booking booking = new Booking(123L, ticketRequest);
+    private final Long accountId = 123L;
 
-    assertEquals(123L, booking.accountId());
+    @Test
+    void shouldReturnAccountIdAndTicketRequests_whenBookingCreatedWithAdultTicket() {
+        TicketRequest ticketRequest = new TicketRequest(ADULT, 1);
+        Booking booking = new Booking(accountId, ticketRequest);
 
-    final List<TicketRequest> ticketRequests = List.of(booking.ticketRequests());
-    assertNotNull(ticketRequests);
-    assertEquals(1, ticketRequests.size());
+        assertThat(booking.accountId()).isEqualTo(accountId);
+        assertThat(booking.ticketRequests()).hasSize(1).contains(ticketRequest);
+    }
 
-    final TicketRequest actualTicketRequest = ticketRequests.getFirst();
-    assertEquals(ticketRequest, actualTicketRequest);
-  }
+    @Test
+    void shouldReturnAccountIdAndTicketRequests_whenBookingCreatedWithNoTicket() {
+        Booking booking = new Booking(accountId);
 
+        assertThat(booking.accountId()).isEqualTo(accountId);
+        assertThat(booking.ticketRequests()).hasSize(0);
+    }
+
+    @Test
+    void shouldReturnAccountIdAndMultipleTicketRequests_whenBookingCreatedWithMultipleTicket() {
+        Booking booking = new Booking(accountId,
+                new TicketRequest(TicketType.INFANT, 2),
+                new TicketRequest(TicketType.CHILD, 3));
+
+        assertThat(booking.accountId()).isEqualTo(accountId);
+        assertThat(booking.ticketRequests()).hasSize(2);
+    }
 }

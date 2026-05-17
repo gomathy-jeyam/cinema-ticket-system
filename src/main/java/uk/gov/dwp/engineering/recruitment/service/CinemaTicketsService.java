@@ -1,4 +1,4 @@
-package uk.gov.dwp.engineering.recruitment;
+package uk.gov.dwp.engineering.recruitment.service;
 
 import uk.gov.dwp.engineering.recruitment.domain.TicketRequest;
 import uk.gov.dwp.engineering.recruitment.exception.InvalidBookingException;
