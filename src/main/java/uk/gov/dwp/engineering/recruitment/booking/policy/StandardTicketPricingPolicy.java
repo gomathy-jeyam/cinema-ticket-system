@@ -11,10 +11,10 @@ import java.util.Map;
 import java.util.Objects;
 
 @Component
-public class StandardTicketPricingPolicyImpl implements TicketPricingPolicy {
+public class StandardTicketPricingPolicy implements TicketPricingPolicy {
     private final Map<TicketType, BigDecimal> prices;
 
-    public StandardTicketPricingPolicyImpl(BookingProperties properties){
+    public StandardTicketPricingPolicy(BookingProperties properties){
         BookingProperties.Pricing pricing = properties.pricing();
         prices = Map.copyOf(new EnumMap<>(Map.of(
                 TicketType.ADULT, pricing.adult(),

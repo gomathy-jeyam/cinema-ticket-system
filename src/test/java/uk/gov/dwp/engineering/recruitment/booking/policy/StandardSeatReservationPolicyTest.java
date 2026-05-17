@@ -6,13 +6,13 @@ import uk.gov.dwp.engineering.recruitment.domain.TicketType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class StandardSeatReservationPolicyImplTest {
+class StandardSeatReservationPolicyTest {
 
-    private StandardSeatReservationPolicyImpl policy;
+    private StandardSeatReservationPolicy policy;
 
     @BeforeEach
     void setUp() {
-        policy = new StandardSeatReservationPolicyImpl();
+        policy = new StandardSeatReservationPolicy();
     }
 
     @Test

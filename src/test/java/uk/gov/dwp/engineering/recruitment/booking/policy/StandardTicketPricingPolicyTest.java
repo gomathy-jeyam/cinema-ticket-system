@@ -10,9 +10,9 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class StandardTicketPricingPolicyImplTest {
+class StandardTicketPricingPolicyTest {
 
-    private StandardTicketPricingPolicyImpl policy;
+    private StandardTicketPricingPolicy policy;
 
     @BeforeEach
     void setUp() {
@@ -20,7 +20,7 @@ class StandardTicketPricingPolicyImplTest {
                 new BigDecimal("25"),
                 new BigDecimal("15"),
                 BigDecimal.ZERO);
-        policy = new StandardTicketPricingPolicyImpl(new BookingProperties(25, pricing));
+        policy = new StandardTicketPricingPolicy(new BookingProperties(25, pricing));
     }
 
     @Test
@@ -48,8 +48,8 @@ class StandardTicketPricingPolicyImplTest {
     void shouldSupportDynamicConfiguredPrices_whenCustomPricingProvided() {
         BookingProperties.Pricing customPricing = new BookingProperties.Pricing(
                 new BigDecimal("30"), new BigDecimal("20"), BigDecimal.ZERO);
-        StandardTicketPricingPolicyImpl customPolicy =
-                new StandardTicketPricingPolicyImpl(new BookingProperties(25, customPricing));
+        StandardTicketPricingPolicy customPolicy =
+                new StandardTicketPricingPolicy(new BookingProperties(25, customPricing));
 
         assertThat(customPolicy.priceFor(TicketType.ADULT)).isEqualByComparingTo("30");
         assertThat(customPolicy.priceFor(TicketType.CHILD)).isEqualByComparingTo("20");
